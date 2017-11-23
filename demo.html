@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+<div class="box">
+    <custom-box content={"title":"一级标题","children":[{"title":"二级标题"},{"title":"二级标题"},{"title":"二级标题"},{"title":"二级标题"}]}></custom-box>
+</div>
+</body>
+<style>
+    *{
+        margin:0;
+        padding: 0;
+    }
+    .aside{
+        width:200px;
+        height: auto;
+        background: #c9e6f9;
+    }
+    ul{
+        width: 100%;
+        height: auto;
+    }
+    li{
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+    }
+</style>
+<script>
+    Vue.component("customBox",{
+       props: ['content'],
+       template: `<ul class='aside'><li @click='fold()'>{{this.con['title']}}</li><ul><li v-show="flag" v-for="item in this.con['children']">{{item['title']}}</li></ul></ul>`,
+       data: function(){
+           return{
+               con: JSON.parse(this.content),
+               flag: true
+           }
+       },
+       methods: {
+           fold(){
+                this.flag = !this.flag
+           }
+       }
+    });
+    new Vue({
+        el: '.box'
+    });
+</script>
+</html>
