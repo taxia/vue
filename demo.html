@@ -36,13 +36,18 @@
         line-height: 30px;
         border-bottom: 1px solid #f6f6f6;
         text-align: center;
-
+    }
+    .fade-enter-active, .fade-leave-active {
+            transition: opacity 0.3s;
+    }
+    .fade-enter, .fade-leave-to{
+            opacity: 0;
     }
 </style>
 <script>
     Vue.component("customBox",{
        props: ['content'],
-       template: `<ul class='aside'><li @click='fold()'>{{this.con['title']}}</li><ul><li v-show="flag" v-for="item in this.con['children']">{{item['title']}}</li></ul></ul>`,
+       template: `<ul class='aside'><li @click='fold()'>{{this.con['title']}}</li><ul><transition name="fade" v-for="item in this.con['children']"><li v-show="flag" >{{item['title']}}</li></transition></ul></ul>`,
        data: function(){
            return{
                con: JSON.parse(this.content),
