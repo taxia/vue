@@ -5,25 +5,23 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="./vue.min.js"></script>
+    <script src="./node_modules/vue/dist/vue.js"></script>
     <title>Document</title>
 </head>
 <body>
 <div class="box">
-    <custom-box content={"title":"一级标题","children":[{"title":"二级标题"},{"title":"二级标题"},{"title":"二级标题"},{"title":"二级标题"}]}></custom-box>
-    <custom-box content={"title":"一级标题","children":[{"title":"二级标题"},{"title":"二级标题"},{"title":"二级标题"},{"title":"二级标题"}]}></custom-box>
-    <custom-box content={"title":"一级标题","children":[{"title":"二级标题"},{"title":"二级标题"},{"title":"二级标题"},{"title":"二级标题"}]}></custom-box>
+    <custom-box></custom-box>
 </div>
 </body>
 <style>
     *{
         margin:0;
         padding: 0;
+        list-style: none;
     }
-    .aside{
+    aside{
         width:200px;
         height: auto;
-        margin-bottom: 5px;
         background: #c9e6f9;
     }
     ul{
@@ -34,29 +32,45 @@
         width: 100%;
         height: 30px;
         line-height: 30px;
-        border-bottom: 1px solid #f6f6f6;
         text-align: center;
+        user-select:none;
     }
-    .fade-enter-active, .fade-leave-active {
-            transition: opacity 0.3s;
+    .title{
+        font-weight: bold;
+        color: #1b6d85;
+        cursor: pointer;
+        border-bottom: 1px solid #b3b3b3;
     }
-    .fade-enter, .fade-leave-to{
-            opacity: 0;
+    .children-box li{
+        cursor: default;
     }
 </style>
+<script type="text/x-template" id="con">
+    <aside>
+        <ul v-for="item in datas">
+            <li class="title" @click="fold(item)">{{item.title}}</li>
+            <ul class="children-box">
+                <li v-for="child in item.info" v-show="item.flag">{{child}}</li>
+            </ul>
+        </ul>
+    </aside>
+</script>
 <script>
     Vue.component("customBox",{
-       props: ['content'],
-       template: `<ul class='aside'><li @click='fold()'>{{this.con['title']}}</li><ul><transition name="fade" v-for="item in this.con['children']"><li v-show="flag" >{{item['title']}}</li></transition></ul></ul>`,
-       data: function(){
-           return{
-               con: JSON.parse(this.content),
-               flag: true
-           }
-       },
+       template: "#con",
+        data: function () {
+            return {
+                datas:[
+                {'title':'一','flag':true,'info':['一一一','二二二','三三三','四四四']},
+                {'title':'二','flag':true,'info':['五五五','六六六']},
+                {'title':'三','flag':true,'info':['七七七','八八八','九九九']},
+                {'title':'四','flag':true,'info':['十十十']}
+                ],
+            }
+        },
        methods: {
-           fold(){
-                this.flag = !this.flag
+           fold(item){
+               item.flag = !item.flag;
            }
        }
     });
